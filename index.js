@@ -7,8 +7,16 @@ function getResults(searchName){
     console.log(searchURL);
     // returns json from url get request
     fetch(searchURL)
-        .then(response => response.json())
-        .then(responseJson => handleDisplay(responseJson));
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => handleDisplay(responseJson))
+        .catch(error => {
+            alert(`Something went wrong: ${error.message}`);
+        });
 }
 
 function handleForm() {
@@ -30,12 +38,16 @@ function handleForm() {
 
 function handleDisplay(responseJson) {
     // displays the results and unhides the results seciton
+    $('.js-results').empty();
     $('.js-results').removeClass('hidden');
-    for (let i=0; i < responseJson.length; i++){
+    for (let i=1; i < responseJson.length; i++){
         $('.js-results').append(`
-        <li><h3><a href="${responseJson[i].owner.url}">${responseJson[i].name}</a></h3></li>
+        <li>
+            <h3><a href="${responseJson[i].owner.html_url}">${responseJson[i].name}</a></h3>
+
+        </li>
     `)};
-    console.log("handleDisplay() ran");
+    console.log("handleDisplay ran");
 }
 
 handleForm();
