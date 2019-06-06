@@ -8,7 +8,7 @@ function getResults(searchName){
     // returns json from url get request
     fetch(searchURL)
         .then(response => response.json())
-        .then(responseJson => console.log(responseJson));
+        .then(responseJson => handleDisplay(responseJson));
 }
 
 function handleForm() {
@@ -28,14 +28,14 @@ function handleForm() {
     })
 }
 
-function handleDisplay() {
+function handleDisplay(responseJson) {
     // displays the results and unhides the results seciton
     $('.js-results').removeClass('hidden');
-    for (let i=0; i <responseJson.length; i++){
+    for (let i=0; i < responseJson.length; i++){
         $('.js-results').append(`
-        <li><h3><a href="${responseJson[i].owner.url}">${response.Json[i].name}</a></h3></li>
-    `);
-    }
+        <li><h3><a href="${responseJson[i].owner.url}">${responseJson[i].name}</a></h3></li>
+    `)};
+    console.log("handleDisplay() ran");
 }
 
 handleForm();
